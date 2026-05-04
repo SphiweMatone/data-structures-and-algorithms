@@ -1,14 +1,13 @@
-# Data Structures and Algorithms
+## Key Insight
 
-This repository contains my implementations of core data structures and algorithms, with a focus on understanding how they work internally and applying them to solve problems.
+To achieve O(1) time complexity:
+- A HashMap is used for fast lookups
+- A Doubly Linked List maintains usage order
 
-## Goals
-- Strengthen problem-solving skills
-- Build deep understanding of data structures
-- Prepare for technical interviews
+The least recently used item is always at the tail.
 
-## Topics Covered
-- LRU Cache
-- Graph Traversal (BFS, DFS)
-- Trees
-- Sorting Algorithms
+## Why Doubly Linked List?
+
+It allows:
+- O(1) removal of nodes
+- O(1) insertion at the front
