@@ -1,3 +1,6 @@
+// LRU Cache implemented using HashMap + Doubly Linked List
+// get and put operations run in O(1) time
+
 import java.util.HashMap;
 import java.util.Map;
 
