@@ -1,6 +1,6 @@
 # Data Structures and Algorithms
 
-This repository contains my implementations of core data structures and algorithms.
+This repository contains my implementations of core data structures and algorithms, with a focus on understanding how they work internally and applying them to solve problems.
 
 ## Goals
 - Strengthen problem-solving skills
