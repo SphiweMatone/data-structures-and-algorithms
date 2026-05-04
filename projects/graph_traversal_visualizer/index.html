@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Graph Traversal Visualizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 8px 14px;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    .graph {
+      display: grid;
+      grid-template-columns: repeat(3, 90px);
+      gap: 30px;
+      margin-top: 20px;
+      width: 330px;
+    }
+
+    .node {
+      width: 70px;
+      height: 70px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      background: white;
+      transition: background 0.3s;
+    }
+
+    .visited {
+      background: lightgreen;
+    }
+
+    .current {
+      background: gold;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Graph Traversal Visualizer</h1>
+
+  <p>
+    This project visualizes how BFS and DFS visit nodes in a graph.
+  </p>
+
+  <div class="controls">
+    <button onclick="runBFS()">Run BFS</button>
+    <button onclick="runDFS()">Run DFS</button>
+    <button onclick="resetGraph()">Reset</button>
+  </div>
+
+  <h3>Traversal Order:</h3>
+  <p id="order"></p>
+
+  <div class="graph">
+    <div class="node" id="node-1">1</div>
+    <div class="node" id="node-2">2</div>
+    <div class="node" id="node-3">3</div>
+    <div class="node" id="node-4">4</div>
+    <div class="node" id="node-5">5</div>
+    <div class="node" id="node-6">6</div>
+  </div>
+
+  <script>
+    const graph = {
+      1: [2, 3],
+      2: [1, 4, 5],
+      3: [1, 6],
+      4: [2],
+      5: [2],
+      6: [3]
+    };
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function resetGraph() {
+      document.getElementById("order").textContent = "";
+
+      for (let i = 1; i <= 6; i++) {
+        const nodeElement = document.getElementById(`node-${i}`);
+        nodeElement.classList.remove("visited");
+        nodeElement.classList.remove("current");
+      }
+    }
+
+    async function visitNode(node, order) {
+      const nodeElement = document.getElementById(`node-${node}`);
+
+      nodeElement.classList.add("current");
+      await sleep(600);
+
+      nodeElement.classList.remove("current");
+      nodeElement.classList.add("visited");
+
+      order.push(node);
+      document.getElementById("order").textContent = order.join(" → ");
+    }
+
+    async function runBFS() {
+      resetGraph();
+
+      const visited = new Set();
+      const queue = [];
+      const order = [];
+
+      queue.push(1);
+      visited.add(1);
+
+      while (queue.length > 0) {
+        const node = queue.shift();
+
+        await visitNode(node, order);
+
+        for (const neighbor of graph[node]) {
+          if (!visited.has(neighbor)) {
+            visited.add(neighbor);
+            queue.push(neighbor);
+          }
+        }
+      }
+    }
+
+    async function runDFS() {
+      resetGraph();
+
+      const visited = new Set();
+      const order = [];
+
+      async function dfs(node) {
+        visited.add(node);
+
+        await visitNode(node, order);
+
+        for (const neighbor of graph[node]) {
+          if (!visited.has(neighbor)) {
+            await dfs(neighbor);
+          }
+        }
+      }
+
+      await dfs(1);
+    }
+  </script>
+</body>
+</html>
